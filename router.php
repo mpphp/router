@@ -9,7 +9,7 @@
  * @param string $action
  * @return mixed
  */
-function router(
+function _router(
     array $routes,
     array $destinations,
     string $controller = 'index',
