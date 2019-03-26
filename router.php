@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Undocumented function
+ * Router.
  *
  * @param array $routes
  * @param array $destinations
@@ -35,9 +35,9 @@ function router(
         }
     }
 
-    $controller = file_search("{$url[0]}.controller.php", $destinations);
+    $controller = _file_search("{$url[0]}.controller.php", $destinations);
 
-    redirect_else($controller, route('/page-not-found'));
+    _redirect_else($controller, _route('/page-not-found'));
 
     // Remove '0' from $url array.
     unset($url[0]);
@@ -46,7 +46,7 @@ function router(
     require_once $controller;
 
     if (isset($url[1])) {
-        redirect_else(function_exists("{$url[1]}Action"), route('/page-not-found'));
+        _redirect_else(function_exists("{$url[1]}Action"), _route('/page-not-found'));
 
         $action = "{$url[1]}Action";
 
