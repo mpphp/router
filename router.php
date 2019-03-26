@@ -55,7 +55,6 @@ function _router(
     }
 
     $params = $url ? array_values($url) : [];
-    print_r($params);
 
     return call_user_func($action, $params);
 }
