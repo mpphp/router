@@ -5,16 +5,22 @@
  *
  * @param array $routes
  * @param array $destinations
- * @param string $controller
- * @param string $action
+ * @param array $middleware
  * @return mixed
  */
 function _router(
     array $routes,
     array $destinations,
-    string $controller = 'index',
-    string $action = 'indexAction'
+    array $middleware = []
 ) {
+    foreach ($middleware['web']['beforeMiddleware'] as $before_middlware) {
+        require_once $before_middlware;
+    }
+
+    $action = 'indexAction';
+    $controller = 'index';
+    $route_middleware_group = [];
+
     // Check the type of interface between web server and PHP to see if it is a "cli-server".
     if (php_sapi_name() == 'cli-server') {
         $uri = substr($_SERVER["REQUEST_URI"], 1);
@@ -25,13 +31,21 @@ function _router(
             : [$controller];
     }
 
-    foreach ($routes as $key => $value) {
+    foreach ($routes['web'] as $key => $value) {
         if ($url[0] == $key) {
             if (!isset($url[1]) && array_key_exists('action', $value)) {
                 $action = $value['action'] . 'Action';
             }
 
             $url[0] = $value['controller'];
+        }
+
+        $route_middleware_group = array_key_exists('middleware', $value) ? $value['middleware'] : [];
+    }
+
+    if (array_key_exists('before', $route_middleware_group)) {
+        foreach ($route_middleware_group['before'] as $route_middlware) {
+            require_once $route_middlware;
         }
     }
 
@@ -56,5 +70,15 @@ function _router(
 
     $params = $url ? array_values($url) : [];
 
-    return call_user_func($action, $params);
+    call_user_func($action, $params);
+
+    if (array_key_exists('after', $route_middleware_group)) {
+        foreach ($route_middleware_group['after'] as $route_middlware) {
+            require_once $route_middlware;
+        }
+    }
+
+    foreach ($middleware['web']['afterMiddleware'] as $after_middlware) {
+        require_once $after_middlware;
+    }
 }
