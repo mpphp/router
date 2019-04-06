@@ -13,6 +13,7 @@ function _router(
     array $destinations,
     array $middleware = []
 ) {
+
     foreach ($middleware['web']['beforeMiddleware'] as $before_middlware) {
         require_once $before_middlware;
     }
@@ -20,6 +21,7 @@ function _router(
     $action = 'indexAction';
     $controller = 'index';
     $route_middleware_group = [];
+    $returns_view = [false, 'view' => ''];
 
     // Check the type of interface between web server and PHP to see if it is a "cli-server".
     if (php_sapi_name() == 'cli-server') {
@@ -32,46 +34,62 @@ function _router(
     }
 
     foreach ($routes['web'] as $key => $value) {
+        $returns_view[0] = is_string($value);
+        $returns_view['view'] = $value;
+
         if ($url[0] == $key) {
+
+            if ($returns_view[0]) {
+                break;
+            }
+
             if (!isset($url[1]) && array_key_exists('action', $value)) {
                 $action = $value['action'] . 'Action';
             }
 
             $url[0] = $value['controller'];
+
+            $route_middleware_group = array_key_exists('middleware', $value) ? $value['middleware'] : [];
+            
+            break;
         }
-
-        $route_middleware_group = array_key_exists('middleware', $value) ? $value['middleware'] : [];
     }
-
+    
     if (array_key_exists('before', $route_middleware_group)) {
         foreach ($route_middleware_group['before'] as $route_middlware) {
             require_once $route_middlware;
         }
     }
 
-    $controller = _file_search("{$url[0]}.controller.php", $destinations);
+    if ($returns_view[0]) {
 
-    _redirect_else($controller, _route('/page-not-found'));
+        _view($returns_view['view']);
+        
+    } else {
+        $controller = _file_search("{$url[0]}.controller.php", $destinations);
 
-    // Remove '0' from $url array.
-    unset($url[0]);
-
-    // Require controller.
-    require_once $controller;
-
-    if (isset($url[1])) {
-        _redirect_else(function_exists("{$url[1]}Action"), _route('/page-not-found'));
-
-        $action = "{$url[1]}Action";
-
-        // Remove '1' from $url array.
-        unset($url[1]);
+        _redirect_else($controller, _route('/page-not-found'));
+    
+        // Remove '0' from $url array.
+        unset($url[0]);
+    
+        // Require controller.
+        require_once $controller;
+    
+        if (isset($url[1])) {
+            _redirect_else(function_exists("{$url[1]}Action"), _route('/page-not-found'));
+    
+            $action = "{$url[1]}Action";
+    
+            // Remove '1' from $url array.
+            unset($url[1]);
+        }
+    
+        $params = $url ? array_values($url) : [];
+    
+        call_user_func($action, $params);
     }
-
-    $params = $url ? array_values($url) : [];
-
-    call_user_func($action, $params);
-
+    
     if (array_key_exists('after', $route_middleware_group)) {
         foreach ($route_middleware_group['after'] as $route_middlware) {
             require_once $route_middlware;
