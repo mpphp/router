@@ -63,7 +63,7 @@ function _router(
 
     if ($returns_view[0]) {
 
-        $returns_view['view'];
+        _view($returns_view['view']);
         
     } else {
         $controller = _file_search("{$url[0]}.controller.php", $destinations);
