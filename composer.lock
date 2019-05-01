@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d48c543ed0ab23227bafb23a912fd06c",
+    "content-hash": "b2d63604c80c2437844de3fe4c643394",
     "packages": [
         {
             "name": "mpphp/support",
-            "version": "dev-master",
+            "version": "v1.0.0-alpha",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpphp/support.git",
-                "reference": "2dc48986c3e1677b0cf15ca0280b3c852d14baa7"
+                "reference": "1e550a97e99539a546b822510f7392077c386644"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpphp/support/zipball/2dc48986c3e1677b0cf15ca0280b3c852d14baa7",
-                "reference": "2dc48986c3e1677b0cf15ca0280b3c852d14baa7",
+                "url": "https://api.github.com/repos/mpphp/support/zipball/1e550a97e99539a546b822510f7392077c386644",
+                "reference": "1e550a97e99539a546b822510f7392077c386644",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,9 @@
             "autoload": {
                 "files": [
                     "functions/array.php",
+                    "functions/core.php",
+                    "functions/hash.php",
+                    "functions/session.php",
                     "functions/string.php",
                     "functions/utils.php"
                 ]
@@ -49,15 +52,58 @@
                 "helpers",
                 "php"
             ],
-            "time": "2019-03-26T12:41:38+00:00"
+            "time": "2019-04-08T08:50:24+00:00"
+        },
+        {
+            "name": "mpphp/view",
+            "version": "v1.0.0-alpha",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpphp/veiw.git",
+                "reference": "042315aed0600b24a32af94a49f771f9f3bee466"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpphp/veiw/zipball/042315aed0600b24a32af94a49f771f9f3bee466",
+                "reference": "042315aed0600b24a32af94a49f771f9f3bee466",
+                "shasum": ""
+            },
+            "require": {
+                "mpphp/support": "~v1.0.0-alpha",
+                "php": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "view.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anitche Chisom",
+                    "email": "anitchec.dev@gmail.com"
+                }
+            ],
+            "description": "MPPHP view library.",
+            "homepage": "https://mpphp.github.io/mpphp/",
+            "keywords": [
+                "MpPHP",
+                "framework",
+                "php",
+                "procedural",
+                "view"
+            ],
+            "time": "2019-05-01T17:48:05+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "mpphp/support": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

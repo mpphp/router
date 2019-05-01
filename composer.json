@@ -19,7 +19,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
-        "mpphp/support": "~v1.0.0-alpha",
-        "mpphp/view": "~v1.0.0-alpha"
+        "mpphp/view": "~v1.0.0-alpha",
+        "mpphp/support": "~v1.0.0-alpha"
     }
 }
