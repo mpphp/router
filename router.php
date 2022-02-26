@@ -24,7 +24,7 @@ function _router(
     $returns_view = [false, 'view' => ''];
 
     // Check the type of interface between web server and PHP to see if it is a "cli-server".
-    if (php_sapi_name() == 'cli-server') {
+    if (in_array(php_sapi_name(),['cli-server', 'apache2handler'])) {
         $uri = substr($_SERVER["REQUEST_URI"], 1);
         $url = $uri === '' ? [$controller] : explode('/', filter_var(rtrim($uri, '/'), FILTER_SANITIZE_URL));
     } else {
